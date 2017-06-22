@@ -5,9 +5,9 @@
 #include <sys/wait.h>
 #include <stdlib.h>
 
+int j = 0;
 
-
-void inicializa_tab(int vet[], int tam, int vet_aux[]){
+void inicializa_tab(int vet[], int tam){
 
 	for (int i = 0; i < tam; i++){
 
@@ -15,81 +15,131 @@ void inicializa_tab(int vet[], int tam, int vet_aux[]){
 	}
 
 }
-void criar_proc(int vet[], int vet_aux[],int tam , int pid){
 
 
-int flag, proc, aux =0;
-do{
-
-printf("Informe o tamanho do processo :\n");
-scanf("%d",&proc);
+void best_fit(int vet[], int tam , int pid, int aux){
 
 
-int j = proc + (aux);
+   int flag =0, proc, inicio ,fim =0,tamanho_buraco = 0;
+   printf("Informe o tamanho do processo :\n");
+   scanf("%d",&proc);
 
-if(j > tam){
+   system("clear");
+   //verifica se ta cheia
 
-	printf("\nEsse processo excede o tamanho livre da memoria, o processo nao foi criado\n");
-	return;
-}
+    for(int i = 0; i< tam; i++){
+   
+           	if( vet[i]== 0){
+           		flag =0;
+           	}
+           	else{
+           		flag = 1;
+           	}
+           }   
+           if(flag == 1 || ((proc+inicio) > tam)){
+           	printf("MEMORIA CHEIA\n");
+           	return;
+           }
 
-for(int i= (aux); i< j;i++){
 
-	vet[i] = pid;
-	aux++;
-}
-pid++;
+   //verifica o começo do buraco
+   for (int i= 0 ; i< tam; i++){
+   	    if(vet[i] == 0){
+   	 	inicio = i;
+   	 	printf("valor de inicio %d\n",inicio);
+   	 	break;
+   	    }
 
+    }
+       //verifica o tamanho do buraco
+    for (int i= inicio ; i< tam; i++){
+   	   if(vet[i] == 0){
+   	 	
+   	   tamanho_buraco++;
+   	   }else{
+   	 	
+   	 	break;
+   	   }
+
+    }
+
+
+  
+//printf("buraco de tamanho = %d\n",tamanho_buraco);
+
+
+    int j = inicio+proc;     
+    for(int i = inicio; i < j ; i++){
+
+    //se o tamanho do  buraco for menor que o tamanho do processo
+        if(tamanho_buraco >= proc){  
+ 
+    	 
+
+    		vet[i] = pid;
+    		
+   
+        }else{
+          
+            while(vet[inicio]==0){
+                inicio++;
+            }
+            while(vet[inicio]!=0){
+                inicio++;
+            }
+            return;
+
+        }
+   
+
+    }  
+	printf("NOVO VALOR INICIO %d\n",inicio);
+fim= inicio + tamanho_buraco;
+//printf("buraco de fim = %d\n",fim);
 printf("\nPROCESSO INSERIDO NO MAPA DE BITS \n");
-printf("-----------------------------------\n");
-printf("deseja inserir outro ?(sim = 1, nao = 0 )\n");
 
-       scanf("%d",&flag);
-
-    
-}while ( flag == 1);
 }
+
+
 void matar_proc( int vet[], int tam){
-int id, flag = 0, inicio, contador =0;
+int id, flag = 0, inicio, tamanho_buraco =0;
 printf("Qual o id do processo que voce deseja matar?\n");
 scanf("%d",&id);
-
+system("clear");
 do{
 	for (int i = 0; i< tam; i++){
-		//printf("entrou no FOR, valor de i = %d |\n",i);
+		
 		if(vet[i] == id){
-			//printf("entrou no if de busca 01 |\n");
-			contador++;
+			
+			tamanho_buraco++;
 		}		
 	}
 	for (int i = 0; i< tam; i++){
 	 if(vet[i] == id){
-	 		//printf("entrou no if de busca 02 |\n");
+	
 			inicio = i;	
 			break;		
 		}
 	}
 
 
-//printf("valor de inicio = %d \n", inicio );
-//printf("valor de contador = %d \n", contador );
-
-int j= inicio + contador;
-for(int i= inicio; i< j;i++){
+int j= inicio + tamanho_buraco;
+    for(int i= inicio; i< j;i++){
 
 	vet[i]=0;
-}
+    }
+
 printf("PROCESSO ELIMINADO!!!\n");
 printf("deseja matar outro ?(sim = 1, nao = 0 )\n");
+scanf("%d",&flag);
 
-       scanf("%d",&flag);
-
-}while(flag == 1);
-
+  }while(flag == 1);
 }
-void imprime_tab(int vet[], int tam, int vet_aux[]){
+
+void imprime_tab(int vet[], int tam){
+	
 	printf("-----------------------\n");
-	printf("\nMAPA DE BITS DA MEMORIA\n");
+	printf("MAPA DE BITS DA MEMORIA\n");
 	printf("-----------------------\n");
 	for (int i = 0; i < tam; i++){
 
@@ -97,21 +147,18 @@ void imprime_tab(int vet[], int tam, int vet_aux[]){
 	}
 	printf("\n-----------------------\n");
 
-	/*for (int i = 0; i < cont; i++){
-
-		printf("%d ", vet_aux[i]);
-	}*/
-	//printf("\n----------\n");
+	
 }
 
 void main(void){
-	int opcao, tam, proc, contador;
+	int opcao, tam, proc, aux = 0;
 
 printf("-------------------------------\n");
 printf("Informe o tamanho da memoria :\n");
 scanf("%d",&tam);
-int vet[tam], vet_aux[tam], pid=1;
-inicializa_tab(vet,tam,vet_aux);
+system("clear");
+int vet[tam], pid=1;
+inicializa_tab(vet,tam);
 do{
 printf("-------------------------------\n");
 printf("O que voce deseja fazer?\n");
@@ -126,21 +173,25 @@ printf("4- Sair \n");
 
 scanf("%d",&opcao);
 
+system("clear");
+
 switch (opcao)
 {
    case 1:
    		
-       criar_proc(vet,vet_aux, tam,pid);   
-       imprime_tab(vet,tam,vet_aux);       
+       best_fit(vet, tam,pid,aux);   
+       imprime_tab(vet,tam);       
+       pid++;  
+      // system("clear");     
    break;
 
    case 2:
      matar_proc(vet,tam);
-     imprime_tab(vet,tam,vet_aux);
+     imprime_tab(vet,tam);
    break;
 
    case 3:
-     imprime_tab(vet,tam , vet_aux);
+     imprime_tab(vet,tam);
   
    break;
 
@@ -154,15 +205,7 @@ switch (opcao)
 
      printf("OPcAO INVALIDA");
 }
-printf("Voltar ao menu principal?(sim = 1, nao = 0 )\n");
-
-       scanf("%d",&contador);
-}while(contador == 1);
-
-
-
-
-
+}while(1 == 1);
 
 }
 
