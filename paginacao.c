@@ -4,6 +4,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <stdlib.h>
+#include <time.h>
 //funçao para converter decimal para binario
 void converteBinario(int n){
 	int resto, divisao, vetBin[10];
@@ -46,9 +47,154 @@ void converteBinario(int n){
 
 }
 
+void tabela(){
+	// TABELA DE PAGINA
+int tam_pag = 8;
+int vet_flag[tam_pag], vet_indice[tam_pag], vet_ini_pag[tam_pag], vet_fim_pag[tam_pag];
+vet_ini_pag[0]= 0;
+for (int i = 0; i < tam_pag; i++)
+{
+	vet_flag[i]= -1 ;	
+}
+for (int i = 0; i < tam_pag; i++)
+{
+	vet_indice[i]= i;
+}
+for (int i = 1; i < tam_pag; i++)
+{
+	vet_ini_pag[i]= vet_ini_pag[i-1]+4096;
+}
+for (int i = 0; i < tam_pag; i++)
+{
+	vet_fim_pag[i]=vet_ini_pag[i]+4095;
+}
+printf("\nflag ------- indice--------Inicio Pag.-------Fim Pag\n\n");
+for (int i = 0; i < tam_pag; i++)
+{
+	printf("%d           %d               %d                  %d\n", vet_flag[i], vet_indice[i], vet_ini_pag[i], vet_fim_pag[i]);
+}
+//--------------------------------------------------------------
+
+int tam_frame = 4;
+int vet_indice_frame[tam_frame], vet_flag_frame[tam_frame];
+
+for (int i = 0; i < tam_frame; i++)
+{
+	vet_indice_frame[i]= i;
+}
+
+for (int i = 0; i < tam_frame; i++)
+{
+	vet_flag_frame[i]= -1;
+}
+
+
+
+printf("tabela de frames\n");
+printf("\nflag ------- indice\n\n");
+for (int i = 0; i < tam_frame; i++)
+{
+	printf("%d            %d\n",vet_flag_frame[i], vet_indice_frame[i]);
+}
+
+int pagina_rand, frame_rand,  aux ;
+
+
+
+for (int i = 0; i < tam_frame; i++)
+{	
+	
+	srand(time(NULL));  
+	pagina_rand = rand()%8;
+	vet_flag_frame[i] = pagina_rand;	
+
+
+	for(int j=0; j<i; j++)
+		{
+			if(vet_flag_frame[j] == vet_flag_frame[i])
+			{
+				vet_flag_frame[i] = (rand()%8)+1;
+			
+				j=0;
+			}
+		}
+}
+for (int i = 0; i < tam_frame; i++)
+{
+	aux = vet_flag_frame[i];
+	vet_flag[aux] = i;
+}
+
+
+printf("\nflag ------- indice--------Inicio Pag.-------Fim Pag\n\n");
+for (int i = 0; i < tam_pag; i++)
+{
+	printf("%d           %d               %d                  %d\n", vet_flag[i], vet_indice[i], vet_ini_pag[i], vet_fim_pag[i]);
+}
+
+
+printf("tabela de frames\n");
+printf("\nflag ------- indice\n\n");
+for (int i = 0; i < tam_frame; i++)
+{
+	printf("%d            %d\n",vet_flag_frame[i], vet_indice_frame[i]);
+}
+
+
+
+int vet_alea[4], vet_desloc[4];
+for (int i = 0; i < 4;i++)
+{
+		srand(time(NULL));  
+	vet_alea[i] = rand()%32767;
+		
+
+
+	for(int j=0; j<i; j++)
+		{
+			if(vet_alea[j] == vet_alea[i])
+			{
+				vet_alea[i] = (rand()%32767)+1;
+			
+				j=0;
+			}
+		}
+}
+printf("\n\n");
+for (int i = 0; i < 4; i++)
+{
+	printf("%d\n",vet_alea[i]);
+}
+int k =0;
+
+
+
+
+
+
+
+
+
+for (int i = 0; i < 4; i++)
+{
+	printf("\n------ %d\n", vet_desloc[i] );
+}
+
+
+
+
+
+
+}
+
+
+
+
+
 void main(void){
 	int n;
-	printf("informe um numero decimal para converter para binario\n");
-	scanf("%d",&n);
-	converteBinario(n);
+	tabela();
+	//printf("informe um numero decimal para converter para binario\n");
+	//scanf("%d",&n);
+	//converteBinario(n);
 }
