@@ -5,6 +5,22 @@
 #include <sys/wait.h>
 #include <stdlib.h>
 #include <time.h>
+
+void ordena(int  numero[]){
+
+int i, j, aux;
+
+          for( i=0; i<3; i++ ){
+                  for( j=i+1; j<4; j++ ){
+                       if( numero[i] > numero[j] ){
+                           aux = numero[i];
+                           numero[i] = numero[j];
+                           numero[j] = aux;
+                       }
+                  }
+           }        
+}
+
 //funçao para converter decimal para binario
 void converteBinario(int n){
 	int resto, divisao, vetBin[10];
@@ -126,10 +142,10 @@ for (int i = 0; i < tam_frame; i++)
 }
 
 
-printf("\nflag ------- indice--------Inicio Pag.-------Fim Pag\n\n");
+printf("\nIndice-------------- Flag---------------Inicio Pag.-------------Fim Pag\n\n");
 for (int i = 0; i < tam_pag; i++)
 {
-	printf("%d           %d               %d                  %d\n", vet_flag[i], vet_indice[i], vet_ini_pag[i], vet_fim_pag[i]);
+	printf("[   %d   ]         [   %d  ]              [   %d  ]             [   %d  ]\n", vet_indice[i], vet_flag[i],  vet_ini_pag[i], vet_fim_pag[i]);
 }
 
 
@@ -161,11 +177,38 @@ for (int i = 0; i < 4;i++)
 		}
 }
 printf("\n\n");
+
+int deslocamento, k=0;
+
+ordena(vet_alea);
+
 for (int i = 0; i < 4; i++)
 {
 	printf("%d\n",vet_alea[i]);
 }
-int k =0;
+
+
+for (int i = 0; i < 8; i++)
+{
+	if (k == 4)
+	{
+		break;
+	}
+	while( k < 4){
+		if (vet_alea[k]<vet_fim_pag[i])
+		{	
+			deslocamento = vet_alea[k]-vet_ini_pag[i];
+			//printf("%d      %d       %d \n", vet_fim_pag[i],vet_ini_pag[i],vet_alea[k] );			
+
+				vet_desloc[k]= deslocamento;
+			
+			
+			k++;
+		}else{
+			break;
+		}
+	}
+}
 
 
 
@@ -173,12 +216,27 @@ int k =0;
 
 
 
-
+printf("\ndeslocamento \n");
 
 for (int i = 0; i < 4; i++)
 {
-	printf("\n------ %d\n", vet_desloc[i] );
+	printf("%d\n",vet_desloc[i] );
 }
+
+//---------------------------------
+printf("\nIndice-------------- Flag---------------Inicio Pag.-------------Fim Pag\n\n");
+for (int i = 0; i < tam_pag; i++)
+{	if (vet_flag[vet_indice[i]] != -1)
+{	 
+	//printf(" DECIMAL            DECIMAL                 DECIMAL              DECIMAL\n");
+	printf("[   %d   ]         [   %d  ]              [   %d  ]             [   %d  ]\n", vet_indice[i], vet_flag[i],  vet_ini_pag[i], vet_fim_pag[i]);
+}
+	
+}
+
+
+//--------------------------------------------imprime pf
+
 
 
 
