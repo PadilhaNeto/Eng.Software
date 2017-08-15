@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include <sys/time.h>
+#include <sys/time.h> 
 #include <unistd.h>
 #include <sys/types.h>
-#include <sys/wait.h>
+#include <sys/wait.h>  
 #include <stdlib.h>
 #include <time.h>
 
@@ -256,6 +256,7 @@ for (int i = 0; i < tam_pag; i++)
 
 
 void main(void){
+
 	int n;
 	tabela();
 	//printf("informe um numero decimal para converter para binario\n");
