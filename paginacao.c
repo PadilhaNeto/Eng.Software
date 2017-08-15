@@ -201,7 +201,13 @@ for (int i = 0; i < 8; i++)
 			//printf("%d      %d       %d \n", vet_fim_pag[i],vet_ini_pag[i],vet_alea[k] );			
 
 				vet_desloc[k]= deslocamento;
-			
+			printf("\n\nPagina = %d\n",vet_indice[i] );
+			if (vet_flag[i] != -1)
+			{
+				printf("Moldura = %d\n\n", vet_flag[i] );
+			}else{
+				printf("PAGE FAULT\n\n");
+			}
 			
 			k++;
 		}else{
