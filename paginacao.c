@@ -6,12 +6,12 @@
 #include <stdlib.h>
 #include <time.h>
 
-void ordena(int  numero[]){
+void ordena(int  numero[], int cont_alea){
 
 int i, j, aux;
 
-          for( i=0; i<3; i++ ){
-                  for( j=i+1; j<4; j++ ){
+          for( i=0; i<cont_alea-1; i++ ){
+                  for( j=i+1; j<cont_alea; j++ ){
                        if( numero[i] > numero[j] ){
                            aux = numero[i];
                            numero[i] = numero[j];
@@ -22,10 +22,10 @@ int i, j, aux;
 }
 
 //funçao para converter decimal para binario
-void converteBinario(int n){
-	int resto, divisao, vetBin[10];
+void converteBinario(int n, int bits){
+	int resto, divisao, vetBin[bits];
 //inicia o vetor de bit com -1
-	for (int j = 0; j < 10; j++){
+	for (int j = 0; j < bits; j++){
 
 		vetBin[j] = -1;
 	}
@@ -45,10 +45,10 @@ void converteBinario(int n){
 	while ( divisao >= 2);
 //armazena o ultimo resultado no vetor
 	vetBin[i]= divisao;
-	printf("numero em decimal: %d\n",n );
-	printf("valor em binario: \n");
+	//printf("numero em decimal: %d\n",n );
+	printf(" ");
 //completa o vetor com 0 ate chegar no numero de bits proposto
-	for (int j = 0; j < 10; j++){
+	for (int j = 0; j < bits; j++){
 	
 		if (vetBin[j] == -1)
 		{
@@ -57,15 +57,15 @@ void converteBinario(int n){
 	}
 
 // imprime o vetor da ultima posiçao ate a primeira
-	for (int j = 9; j >= 0 ; j--){
+	for (int j = bits-1; j >= 0 ; j--){
 	printf("%d",vetBin[j]);
 	}
 
 }
 
-void tabela(){
+void tabela(int n){
 	// TABELA DE PAGINA
-int tam_pag = 8;
+int tam_pag = 1024;
 int vet_flag[tam_pag], vet_indice[tam_pag], vet_ini_pag[tam_pag], vet_fim_pag[tam_pag];
 vet_ini_pag[0]= 0;
 for (int i = 0; i < tam_pag; i++)
@@ -84,14 +84,52 @@ for (int i = 0; i < tam_pag; i++)
 {
 	vet_fim_pag[i]=vet_ini_pag[i]+4095;
 }
-printf("\nflag ------- indice--------Inicio Pag.-------Fim Pag\n\n");
+printf("\nIndice__________Indice Moldura__________Inicio Pag.__________Fim Pag\n\n");
 for (int i = 0; i < tam_pag; i++)
 {
-	printf("%d           %d               %d                  %d\n", vet_flag[i], vet_indice[i], vet_ini_pag[i], vet_fim_pag[i]);
+	printf("%d", vet_indice[i] );
+	if (vet_indice[i] < 10)
+	{
+		printf("                    ");
+	}else if (vet_indice[i] >= 10 && vet_indice[i]< 100){
+		printf("                   ");
+	}else if (vet_indice[i] >= 100 && vet_indice[i]< 1000 ){
+		printf("                  ");
+	}else if (vet_indice[i] >= 1000 && vet_indice[i]< 10000 ){
+		printf("                 ");
+	}
+	
+	printf("%d", vet_flag[i]);
+	if (vet_indice[i] < 10)
+	{
+		printf("                    ");
+	}else if (vet_indice[i] >= 10 && vet_indice[i]< 100){
+		printf("                   ");
+	}else if (vet_indice[i] >= 100 && vet_indice[i]< 1000 ){
+		printf("                  ");
+	}else if (vet_indice[i] >= 1000 && vet_indice[i]< 10000 ){
+		printf("                 ");
+	}
+	
+	printf("%d", vet_ini_pag[i]);
+	if (vet_indice[i] < 10)
+	{
+		printf("                    ");
+	}else if (vet_indice[i] >= 10 && vet_indice[i]< 100){
+		printf("                   ");
+	}else if (vet_indice[i] >= 100 && vet_indice[i]< 1000 ){
+		printf("                  ");
+	}else if (vet_indice[i] >= 1000 && vet_indice[i]< 10000 ){
+		printf("                 ");
+	}
+
+	printf("%d", vet_fim_pag[i]);
+	printf("\n");
+
 }
 //--------------------------------------------------------------
 
-int tam_frame = 4;
+int tam_frame = tam_pag/2;
 int vet_indice_frame[tam_frame], vet_flag_frame[tam_frame];
 
 for (int i = 0; i < tam_frame; i++)
@@ -113,15 +151,15 @@ for (int i = 0; i < tam_frame; i++)
 	printf("%d            %d\n",vet_flag_frame[i], vet_indice_frame[i]);
 }
 
-int pagina_rand, frame_rand,  aux ;
+int pagina_rand, frame_rand,  aux , randon;
 
-
+randon = tam_pag - 1 ;
 
 for (int i = 0; i < tam_frame; i++)
 {	
 	
 	srand(time(NULL));  
-	pagina_rand = rand()%8;
+	pagina_rand = rand()%randon;
 	vet_flag_frame[i] = pagina_rand;	
 
 
@@ -129,11 +167,13 @@ for (int i = 0; i < tam_frame; i++)
 		{
 			if(vet_flag_frame[j] == vet_flag_frame[i])
 			{
-				vet_flag_frame[i] = (rand()%8)+1;
+				pagina_rand = (rand()%randon)+1;
+				vet_flag_frame[i] = pagina_rand;
 			
 				j=0;
 			}
 		}
+
 }
 for (int i = 0; i < tam_frame; i++)
 {
@@ -142,27 +182,64 @@ for (int i = 0; i < tam_frame; i++)
 }
 
 
-printf("\nIndice-------------- Flag---------------Inicio Pag.-------------Fim Pag\n\n");
+printf("\nIndice___________Indice Moldura.___________Inicio Pag.______________Fim Pag\n\n");
 for (int i = 0; i < tam_pag; i++)
 {
-	printf("[   %d   ]         [   %d  ]              [   %d  ]             [   %d  ]\n", vet_indice[i], vet_flag[i],  vet_ini_pag[i], vet_fim_pag[i]);
+	printf("%d", vet_indice[i] );
+	if (vet_indice[i] < 10)
+	{
+		printf("                    ");
+	}else if (vet_indice[i] >= 10 && vet_indice[i]< 100){
+		printf("                   ");
+	}else if (vet_indice[i] >= 100 && vet_indice[i]< 1000 ){
+		printf("                  ");
+	}else if (vet_indice[i] >= 1000 && vet_indice[i]< 10000 ){
+		printf("                 ");
+	}
+	
+	printf("%d", vet_flag[i]);
+	if (vet_indice[i] < 10)
+	{
+		printf("                    ");
+	}else if (vet_indice[i] >= 10 && vet_indice[i]< 100){
+		printf("                   ");
+	}else if (vet_indice[i] >= 100 && vet_indice[i]< 1000 ){
+		printf("                  ");
+	}else if (vet_indice[i] >= 1000 && vet_indice[i]< 10000 ){
+		printf("                 ");
+	}
+	
+	printf("%d", vet_ini_pag[i]);
+	if (vet_indice[i] < 10)
+	{
+		printf("                    ");
+	}else if (vet_indice[i] >= 10 && vet_indice[i]< 100){
+		printf("                   ");
+	}else if (vet_indice[i] >= 100 && vet_indice[i]< 1000 ){
+		printf("                  ");
+	}else if (vet_indice[i] >= 1000 && vet_indice[i]< 10000 ){
+		printf("                 ");
+	}
+
+	printf("%d", vet_fim_pag[i]);
+	printf("\n");
 }
+printf("_________________________________________________________________________\n");
 
-
-printf("tabela de frames\n");
-printf("\nflag ------- indice\n\n");
+/*printf("\nTabela de frames\n");
+printf("\nIndice da Pagina _______ Indice da Moldura\n\n");
 for (int i = 0; i < tam_frame; i++)
 {
-	printf("%d            %d\n",vet_flag_frame[i], vet_indice_frame[i]);
+	printf("|     %d                       %d       |\n",vet_flag_frame[i], vet_indice_frame[i]);
 }
+printf("________________________________________________\n");
 
-
-
-int vet_alea[4], vet_desloc[4];
-for (int i = 0; i < 4;i++)
+*/
+int vet_alea[n], vet_desloc[n];
+for (int i = 0; i < n;i++)
 {
 		srand(time(NULL));  
-	vet_alea[i] = rand()%32767;
+	vet_alea[i] = rand()% 4194303;
 		
 
 
@@ -170,82 +247,115 @@ for (int i = 0; i < 4;i++)
 		{
 			if(vet_alea[j] == vet_alea[i])
 			{
-				vet_alea[i] = (rand()%32767)+1;
+				vet_alea[i] = (rand()% 4194302)+1;
 			
 				j=0;
 			}
 		}
 }
-printf("\n\n");
+printf("\n");
 
 int deslocamento, k=0;
 
-ordena(vet_alea);
-
-for (int i = 0; i < 4; i++)
+ordena(vet_alea, n);
+printf("%d VALORES GERADOS ALEATORIAMENTE PARA CONSULTA\n",n);
+for (int i = 0; i < n; i++)
 {
-	printf("%d\n",vet_alea[i]);
+	printf("%d   ",vet_alea[i]);
 }
-
-
-for (int i = 0; i < 8; i++)
+printf("\n_____________________________________________  ___\n");
+//imprime tabela dos elementos randomicos consultados em decimal------------------------
+printf("\nTABELA DE PAGINAÇAO EM DECIMAL\n");
+	printf("\n\n________[ Endereço_Virtual ]_____________________________________[Endereço_Real ]______________\n\n");
+for (int i = 0; i < tam_pag; i++)
 {
-	if (k == 4)
+	if (k == n)
 	{
 		break;
 	}
-	while( k < 4){
+
+	while( k < n){
+	//	printf("vetor aleatorio %d\n",vet_alea[k]);
+	//	printf("vetor fim de pagina %d\n",vet_fim_pag[i]);
+
+
 		if (vet_alea[k]<vet_fim_pag[i])
 		{	
 			deslocamento = vet_alea[k]-vet_ini_pag[i];
-			//printf("%d      %d       %d \n", vet_fim_pag[i],vet_ini_pag[i],vet_alea[k] );			
+						
 
 				vet_desloc[k]= deslocamento;
-			printf("\n\nPagina = %d\n",vet_indice[i] );
+			printf("\n%d        ",vet_indice[i] );
+			printf("                  %d        ",vet_desloc[k]);
 			if (vet_flag[i] != -1)
 			{
-				printf("Moldura = %d\n\n", vet_flag[i] );
-			}else{
-				printf("PAGE FAULT\n\n");
-			}
-			
+				printf("                   %d      ", vet_flag[i] );
+				printf("                  %d        ",vet_desloc[k]);
+
+			}else{   
+				printf("                   PAGE FAULT  ");
+				printf("                ---  ");
+			} 
+			printf("\n");
 			k++;
 		}else{
 			break;
 		}
 	}
 }
+printf("________________________________________________________________________________________________\n");
+//imprime tabela dos elementos randomicos consultados em binario------------------------
+printf("\n\nTABELA DE PAGINAÇAO EM BINARIO\n");
+	printf("\n\n________End.Virtual_________________________End.Real______________\n\n");
+k = 0;
+for (int i = 0; i < tam_pag; i++)
+{
+	if (k == n)
+	{
+		break;
+	}
+
+	while( k < n){
+		if (vet_alea[k]<vet_fim_pag[i])
+		{	
+			deslocamento = vet_alea[k]-vet_ini_pag[i];
+						
+
+				vet_desloc[k]= deslocamento;
+			
+			//printf("\n%d        ",vet_indice[i] );
+			//printf("        %d  ",vet_alea[k]);
+			converteBinario(vet_indice[i],10);	
+			converteBinario(vet_desloc[k],12);		
+			printf("                  ");
+
+			if (vet_flag[i] != -1)
+			{
+				converteBinario(vet_flag[i],8);
+				converteBinario(vet_desloc[k],12);	
+				//printf("                   %d      ", vet_flag[i] );
+			}else{   
+				printf(" PAGE FAULT  ");
+
+			} 
+			printf("\n");
+			k++;
+		}else{
+			break;
+		}
+	}
+}
+printf("__________________________________________________________________\n");
 
 
 
+/*printf("\ndeslocamento \n");
 
-
-
-
-printf("\ndeslocamento \n");
-
-for (int i = 0; i < 4; i++)
+for (int i = 0; i < n; i++)
 {
 	printf("%d\n",vet_desloc[i] );
 }
-
-//---------------------------------
-printf("\nIndice-------------- Flag---------------Inicio Pag.-------------Fim Pag\n\n");
-for (int i = 0; i < tam_pag; i++)
-{	if (vet_flag[vet_indice[i]] != -1)
-{	 
-	//printf(" DECIMAL            DECIMAL                 DECIMAL              DECIMAL\n");
-	printf("[   %d   ]         [   %d  ]              [   %d  ]             [   %d  ]\n", vet_indice[i], vet_flag[i],  vet_ini_pag[i], vet_fim_pag[i]);
-}
-	
-}
-
-
-//--------------------------------------------imprime pf
-
-
-
-
+*/
 
 
 
@@ -256,9 +366,27 @@ for (int i = 0; i < tam_pag; i++)
 
 
 void main(void){
+	printf("|-----------------------------------|\n");
+printf("| Jose Padilha Neto - Breno Teodoro |\n");
+printf("|-----------------------------------|\n");
+printf("|             Paginaçao             |\n");
+printf("|---------------------------------------------------------------------------------------------|\n");
+printf("| Descriçao: O usuario devera informar a quantidade de numeros que desejar,                   |\n");
+printf("| o programa ira gerar aleatoriamente a quantidade de numeros informada em um                 |\n");
+printf("| intervalo entre 0 e 4194302 que correspondem ao endereços virtuais das paginas.             |\n");
+printf("| No final o programa exibe a tabela desses numeros gerados, mostrando se estao mapeados ou ! |\n");
+printf("| com Page Fault.                                                                             |\n");
+
+
+
+
+
+
 	int n;
-	tabela();
-	//printf("informe um numero decimal para converter para binario\n");
-	//scanf("%d",&n);
+	printf("Informe um numero de endereços que deseja consultar\n");
+	scanf("%d",&n);
+	tabela(n);
+	
+	
 	//converteBinario(n);
 }
