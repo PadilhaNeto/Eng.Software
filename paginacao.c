@@ -7,6 +7,10 @@
 #include <time.h>
 float cont_Pf = 0.0, cont_Ok = 0.0;
 float percPF , percOK ;
+// int pagina = 4096;
+// int pagina = 2048;
+int pagina = 1024;
+
 void ordena(int  numero[], int cont_alea){
 
 int i, j, aux;
@@ -82,12 +86,12 @@ for (int i = 0; i < tam_pag; i++)
 //inicia os valores de inicio das paginas
 for (int i = 1; i < tam_pag; i++)
 {
-	vet_ini_pag[i]= vet_ini_pag[i-1]+4096;
+	vet_ini_pag[i]= vet_ini_pag[i-1]+pagina;
 }
 //inicia os valores de final das paginas
 for (int i = 0; i < tam_pag; i++)
 {
-	vet_fim_pag[i]=vet_ini_pag[i]+4095;
+	vet_fim_pag[i]=vet_ini_pag[i]+pagina-1;
 }
 //imprime a tabela de endereços de pagina sem mapeamento
 printf("\nIndice__________Indice Moldura__________Inicio Pag.__________Fim Pag\n\n");
@@ -236,19 +240,20 @@ for (int i = 0; i < tam_frame; i++)
 printf("________________________________________________\n");
 
 //gera quantidade de numeros aleatoriamente (fornecido elo usuario)
-int vet_alea[n], vet_desloc[n];
+int vet_alea[n], vet_desloc[n], ultimo_end;
+ultimo_end = pagina * tam_pag - 1;
 srand(time(NULL)); 
 for (int i = 0; i < n;i++)
 {
 		 
-	vet_alea[i] = rand()% 4194302;	
+	vet_alea[i] = rand()% ultimo_end;	
 
 
 	for(int j=0; j<i; j++)
 		{
 			if(vet_alea[j] == vet_alea[i])
 			{
-				vet_alea[i] = (rand()% 4194302)+1;
+				vet_alea[i] = (rand()% ultimo_end)+1;
 			
 				j=0;
 			}
