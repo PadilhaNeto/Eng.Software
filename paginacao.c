@@ -5,7 +5,8 @@
 #include <sys/wait.h>
 #include <stdlib.h>
 #include <time.h>
-
+float cont_Pf = 0.0, cont_Ok = 0.0;
+float percPF , percOK ;
 void ordena(int  numero[], int cont_alea){
 
 int i, j, aux;
@@ -68,22 +69,27 @@ void tabela(int n){
 int tam_pag = 1024;
 int vet_flag[tam_pag], vet_indice[tam_pag], vet_ini_pag[tam_pag], vet_fim_pag[tam_pag];
 vet_ini_pag[0]= 0;
+//inicia o vetor de paginaçao de frame com -1
 for (int i = 0; i < tam_pag; i++)
 {
 	vet_flag[i]= -1 ;	
 }
+//inicia os valores de indeces de pagina
 for (int i = 0; i < tam_pag; i++)
 {
 	vet_indice[i]= i;
 }
+//inicia os valores de inicio das paginas
 for (int i = 1; i < tam_pag; i++)
 {
 	vet_ini_pag[i]= vet_ini_pag[i-1]+4096;
 }
+//inicia os valores de final das paginas
 for (int i = 0; i < tam_pag; i++)
 {
 	vet_fim_pag[i]=vet_ini_pag[i]+4095;
 }
+//imprime a tabela de endereços de pagina sem mapeamento
 printf("\nIndice__________Indice Moldura__________Inicio Pag.__________Fim Pag\n\n");
 for (int i = 0; i < tam_pag; i++)
 {
@@ -131,56 +137,51 @@ for (int i = 0; i < tam_pag; i++)
 
 int tam_frame = tam_pag/2;
 int vet_indice_frame[tam_frame], vet_flag_frame[tam_frame];
-
+//inicializa os indices de cada frame
 for (int i = 0; i < tam_frame; i++)
 {
 	vet_indice_frame[i]= i;
 }
-
+//inicia os indices das paginas em frames
 for (int i = 0; i < tam_frame; i++)
 {
 	vet_flag_frame[i]= -1;
 }
 
-
-
-printf("tabela de frames\n");
-printf("\nflag ------- indice\n\n");
-for (int i = 0; i < tam_frame; i++)
-{
-	printf("%d            %d\n",vet_flag_frame[i], vet_indice_frame[i]);
-}
-
+//gera paginas aleatorias e associa as frames
 int pagina_rand, frame_rand,  aux , randon;
 
 randon = tam_pag - 1 ;
 
+srand(time(NULL));
 for (int i = 0; i < tam_frame; i++)
-{	
+{		  
+
+	vet_flag_frame[i] = rand()%randon;	
+
 	
-	srand(time(NULL));  
-	pagina_rand = rand()%randon;
-	vet_flag_frame[i] = pagina_rand;	
-
-
 	for(int j=0; j<i; j++)
 		{
-			if(vet_flag_frame[j] == vet_flag_frame[i])
-			{
-				pagina_rand = (rand()%randon)+1;
-				vet_flag_frame[i] = pagina_rand;
 			
+			if(vet_flag_frame[i] == vet_flag_frame[j])
+			{
+			
+					
+				vet_flag_frame[i] = rand()%randon;
 				j=0;
+				
+				
 			}
-		}
+		}	
 
 }
+/**/
 for (int i = 0; i < tam_frame; i++)
 {
 	aux = vet_flag_frame[i];
 	vet_flag[aux] = i;
 }
-
+//imprime tabela mapeada
 
 printf("\nIndice___________Indice Moldura.___________Inicio Pag.______________Fim Pag\n\n");
 for (int i = 0; i < tam_pag; i++)
@@ -225,8 +226,8 @@ for (int i = 0; i < tam_pag; i++)
 	printf("\n");
 }
 printf("_________________________________________________________________________\n");
-
-/*printf("\nTabela de frames\n");
+//imprime a tabela de frames mapeada
+printf("\nTabela de frames\n");
 printf("\nIndice da Pagina _______ Indice da Moldura\n\n");
 for (int i = 0; i < tam_frame; i++)
 {
@@ -234,13 +235,13 @@ for (int i = 0; i < tam_frame; i++)
 }
 printf("________________________________________________\n");
 
-*/
+//gera quantidade de numeros aleatoriamente (fornecido elo usuario)
 int vet_alea[n], vet_desloc[n];
+srand(time(NULL)); 
 for (int i = 0; i < n;i++)
 {
-		srand(time(NULL));  
-	vet_alea[i] = rand()% 4194303;
-		
+		 
+	vet_alea[i] = rand()% 4194302;	
 
 
 	for(int j=0; j<i; j++)
@@ -258,12 +259,12 @@ printf("\n");
 int deslocamento, k=0;
 
 ordena(vet_alea, n);
-printf("%d VALORES GERADOS ALEATORIAMENTE PARA CONSULTA\n",n);
+printf("%d VALORES GERADOS ALEATORIAMENTE PARA CONSULTA\n\n",n);
 for (int i = 0; i < n; i++)
 {
 	printf("%d   ",vet_alea[i]);
 }
-printf("\n_____________________________________________  ___\n");
+printf("\n________________________________________________\n");
 //imprime tabela dos elementos randomicos consultados em decimal------------------------
 printf("\nTABELA DE PAGINAÇAO EM DECIMAL\n");
 	printf("\n\n________[ Endereço_Virtual ]_____________________________________[Endereço_Real ]______________\n\n");
@@ -323,8 +324,6 @@ for (int i = 0; i < tam_pag; i++)
 
 				vet_desloc[k]= deslocamento;
 			
-			//printf("\n%d        ",vet_indice[i] );
-			//printf("        %d  ",vet_alea[k]);
 			converteBinario(vet_indice[i],10);	
 			converteBinario(vet_desloc[k],12);		
 			printf("                  ");
@@ -333,9 +332,11 @@ for (int i = 0; i < tam_pag; i++)
 			{
 				converteBinario(vet_flag[i],8);
 				converteBinario(vet_desloc[k],12);	
-				//printf("                   %d      ", vet_flag[i] );
-			}else{   
+				cont_Ok = cont_Ok + 1.0;
+			}else{
+
 				printf(" PAGE FAULT  ");
+				cont_Pf = cont_Pf + 1.0;
 
 			} 
 			printf("\n");
@@ -345,17 +346,15 @@ for (int i = 0; i < tam_pag; i++)
 		}
 	}
 }
-printf("__________________________________________________________________\n");
+printf("__________________________________________________________________\n\n");
+percPF = ( cont_Pf*100)/n;
+percOK = ( cont_Ok*100)/n;
+printf("TOTAL DE ENDEREÇOS BUSCADOS : %d\n\n",n );
+printf("NUMERO DE ACERTOS: [ %.f ]  EQUIVALENTE A %.3f %%\n",cont_Ok, percOK);
+printf("NUMERO DE PAGE FAULTS: [ %.f ]  EQUIVALENTE A %.3f %%\n\n",cont_Pf,  percPF);
 
 
 
-/*printf("\ndeslocamento \n");
-
-for (int i = 0; i < n; i++)
-{
-	printf("%d\n",vet_desloc[i] );
-}
-*/
 
 
 
@@ -366,7 +365,7 @@ for (int i = 0; i < n; i++)
 
 
 void main(void){
-	printf("|-----------------------------------|\n");
+printf("|-----------------------------------|\n");
 printf("| Jose Padilha Neto - Breno Teodoro |\n");
 printf("|-----------------------------------|\n");
 printf("|             Paginaçao             |\n");
@@ -383,7 +382,7 @@ printf("| com Page Fault.                                                       
 
 
 	int n;
-	printf("Informe um numero de endereços que deseja consultar\n");
+	printf("\nInforme um numero de endereços que deseja consultar\n");
 	scanf("%d",&n);
 	tabela(n);
 	
