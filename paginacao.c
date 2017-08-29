@@ -7,9 +7,9 @@
 #include <time.h>
 float cont_Pf = 0.0, cont_Ok = 0.0;
 float percPF , percOK ;
-// int pagina = 4096;
+int pagina = 4096;
 // int pagina = 2048;
-int pagina = 1024;
+// int pagina = 1024;
 
 void ordena(int  numero[], int cont_alea){
 
@@ -40,21 +40,18 @@ void converteBinario(int n, int bits){
 	resto = n;
 //rotina para dividir o n/2 e guardar os restos no vetor para formar o binario
 	do{
-
-	resto = divisao % 2;
-	divisao = divisao / 2;
-	vetBin[i] = resto;
-	i++;
-
+		resto = divisao % 2;
+		divisao = divisao / 2;
+		vetBin[i] = resto;
+		i++;
 	}
-	while ( divisao >= 2);
-//armazena o ultimo resultado no vetor
-	vetBin[i]= divisao;
+	while (divisao >= 2);
+	//armazena o ultimo resultado no vetor
+	vetBin[i] = divisao;
 	//printf("numero em decimal: %d\n",n );
 	printf(" ");
-//completa o vetor com 0 ate chegar no numero de bits proposto
+	//completa o vetor com 0 ate chegar no numero de bits proposto
 	for (int j = 0; j < bits; j++){
-	
 		if (vetBin[j] == -1)
 		{
 			vetBin[j] = 0;
@@ -63,9 +60,8 @@ void converteBinario(int n, int bits){
 
 // imprime o vetor da ultima posiçao ate a primeira
 	for (int j = bits-1; j >= 0 ; j--){
-	printf("%d",vetBin[j]);
+		printf("%d",vetBin[j]);
 	}
-
 }
 
 void tabela(int n){
@@ -312,7 +308,7 @@ for (int i = 0; i < tam_pag; i++)
 printf("________________________________________________________________________________________________\n");
 //imprime tabela dos elementos randomicos consultados em binario------------------------
 printf("\n\nTABELA DE PAGINAÇAO EM BINARIO\n");
-	printf("\n\n________End.Virtual_________________________End.Real______________\n\n");
+printf("\n\n________End.Virtual_________________________End.Real______________\n\n");
 k = 0;
 for (int i = 0; i < tam_pag; i++)
 {
@@ -320,19 +316,16 @@ for (int i = 0; i < tam_pag; i++)
 	{
 		break;
 	}
-
 	while( k < n){
 		if (vet_alea[k]<vet_fim_pag[i])
 		{	
 			deslocamento = vet_alea[k]-vet_ini_pag[i];
-						
-
+					
 				vet_desloc[k]= deslocamento;
-			
+		
 			converteBinario(vet_indice[i],10);	
 			converteBinario(vet_desloc[k],12);		
 			printf("                  ");
-
 			if (vet_flag[i] != -1)
 			{
 				converteBinario(vet_flag[i],8);
@@ -342,7 +335,6 @@ for (int i = 0; i < tam_pag; i++)
 
 				printf(" PAGE FAULT  ");
 				cont_Pf = cont_Pf + 1.0;
-
 			} 
 			printf("\n");
 			k++;
@@ -357,18 +349,7 @@ percOK = ( cont_Ok*100)/n;
 printf("TOTAL DE ENDEREÇOS BUSCADOS : %d\n\n",n );
 printf("NUMERO DE ACERTOS: [ %.f ]  EQUIVALENTE A %.3f %%\n",cont_Ok, percOK);
 printf("NUMERO DE PAGE FAULTS: [ %.f ]  EQUIVALENTE A %.3f %%\n\n",cont_Pf,  percPF);
-
-
-
-
-
-
 }
-
-
-
-
-
 void main(void){
 printf("|-----------------------------------|\n");
 printf("| Jose Padilha Neto - Breno Teodoro |\n");
@@ -380,17 +361,9 @@ printf("| o programa ira gerar aleatoriamente a quantidade de numeros informada 
 printf("| intervalo entre 0 e 4194302 que correspondem ao endereços virtuais das paginas.             |\n");
 printf("| No final o programa exibe a tabela desses numeros gerados, mostrando se estao mapeados ou ! |\n");
 printf("| com Page Fault.                                                                             |\n");
-
-
-
-
-
-
 	int n;
 	printf("\nInforme um numero de endereços que deseja consultar\n");
 	scanf("%d",&n);
 	tabela(n);
-	
-	
 	//converteBinario(n);
 }
