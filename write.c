@@ -2,7 +2,7 @@
 #include <stdlib.h>
 int main(void)
 {
-	if ((write(1, "Isto é um teste\n", 16)) != 16)
-	write (2, "Erro de escrita no DA 1\n",24);
+	if ((write(1, "Isto é um teste\n\n", 16)) != 16)
+	write (2, "Erro de escrita no DA 1\n\n",24);
 	return (0);
 }

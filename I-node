@@ -1,0 +1,45 @@
+# 3 métodos
+	> Alocação contígua
+	>lista mista
+	>lista ligada
+		qualquer bloco fisico pode ser associado ao bloco lógico, usa ponteiros para determinar qual será o proximo bloco, problema: acesso aleatorio extremamente lento, perde-se espaço. Vantagens: sem desfragmentação de disco pois qqer bloco pode ser endereçado e permite um melhor uso quando não se perde blocos consecutivos, fazendo com que o arquivo cresça ou diminua;
+
+
+														I-nodes ou Nós-índices
+> endereços (endereçamento binário)
+> Bloco índice -> endereços binários
+	   ou
+> Bloco de dados -> informação do usuário
+
+>entrada de diretório -> "/home/alunos/filme.mp4" - ATRIBUTOS DO ARQUIVO (Endereço do I-node do arquivo)
+
+
+
+Ex.:
+Bloco de 4Kb
+endereços de 32b
+
+I-node
+	> 50% atributos
+	> 3 endereços -> indices indiretos simples
+	> 2 endereços -> índices indiretos duplos
+	> 1 endereço  -> índice  indiretos diretos
+	> endereços remanescentes são endereços diretos
+
+QUAL O TAMANHO MÃXIMO DE UM ARQUIVO NESTE MODELO?
+
+	4096/4 = 1024 endereços de 32b em 1 bloco de 4Kb
+	50% referente à atributo, ou seja, 512 endereços
+
+	512 = total
+	3 indireto simples
+	2 indiretos duplos
+	1 indireto triplo
+	todos os outros são diretos
+
+	512-3-2-1 = 506 endereços diretos
+
+	Endereços Diretos 				=> 506*4Kb = 2024Kb
+	Endereçamento indireto simples	=> 1024*4Kb ==> 4MB * 3 = 12Mb
+	Endereçamento indireto duplo 	=> 1024*1024*4kb ==> 4Gb(*2) = 8GB	
+	Endereçamento indireto triplo 	=> 1024*1024*1024*4KB = 4TB
