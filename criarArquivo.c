@@ -68,9 +68,9 @@ return tempo;
 int main(void)
 {
 
-printf("TEMPO PARA COPIAR ARQUIVO DE 1BYTE BYE A BYTE = %f\n", copiaByte());
-//printf("TEMPO PARA COPIAR ARQUIVO DE 1BYTE BLOCO = %f\n", copiaBloco());
-//printf("TEMPO PARA COPIAR ARQUIVO DE 1BYTE BYE A BYTE = %f\n", copiaBiblioteca());
+printf("TEMPO PARA COPIAR ARQUIVO DE 1BYTE BYTE A BYTE = %f\n", copiaByte());
+// printf("TEMPO PARA COPIAR ARQUIVO BLOCO DE 1BYTE BLOCO = %f\n", copiaBloco());
+// printf("TEMPO PARA COPIAR ARQUIVO BIBLIOTECA DE 1BYTE BYE A BYTE = %f\n", copiaBiblioteca());
 
 
 
