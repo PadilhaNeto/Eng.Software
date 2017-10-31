@@ -15,8 +15,8 @@ double tempo;
 
 char c;
 int in, out;
-in = open("file1Byte.in", O_RDONLY);
-out = open("file1Byte.out",O_WRONLY|O_CREAT,S_IRUSR|S_IWUSR);
+in = open("file100Kb.in", O_RDONLY);
+out = open("file100Kb.out",O_WRONLY|O_CREAT,S_IRUSR|S_IWUSR);
 
 gettimeofday(&tempo1,&tzp); 
 while(read(in,&c,1) == 1)
@@ -34,8 +34,8 @@ double tempo;
 char block[4096];
 int in, out;
 int nread;
-in = open("file1Byte.in", O_RDONLY);
-out = open("file1Byte.out", O_WRONLY|O_CREAT, S_IRUSR|S_IWUSR);
+in = open("file1Gb.in", O_RDONLY);
+out = open("file1Gb.out", O_WRONLY|O_CREAT, S_IRUSR|S_IWUSR);
 
 gettimeofday(&tempo1,&tzp); 
 while((nread = read(in,block,sizeof(block))) > 0)
@@ -52,8 +52,8 @@ struct timezone tzp;
 double tempo;
 int c;
 FILE *in, *out;
-in = fopen("file1Byte.in","r");
-out = fopen("file1Byte.out","w");
+in = fopen("file2Mb.in","r");
+out = fopen("file2Mb.out","w");
 gettimeofday(&tempo1,&tzp);
 while((c = fgetc(in)) != EOF)
 fputc(c,out);
@@ -68,9 +68,9 @@ return tempo;
 int main(void)
 {
 
-printf("TEMPO PARA COPIAR ARQUIVO DE 1BYTE BYTE A BYTE = %f\n", copiaByte());
+// printf("TEMPO PARA COPIAR ARQUIVO DE 1BYTE BYTE A BYTE = %f\n", copiaByte());
 // printf("TEMPO PARA COPIAR ARQUIVO BLOCO DE 1BYTE BLOCO = %f\n", copiaBloco());
-// printf("TEMPO PARA COPIAR ARQUIVO BIBLIOTECA DE 1BYTE BYE A BYTE = %f\n", copiaBiblioteca());
+printf("TEMPO PARA COPIAR ARQUIVO BIBLIOTECA DE 1BYTE BYE A BYTE = %f\n", copiaBiblioteca());
 
 
 
